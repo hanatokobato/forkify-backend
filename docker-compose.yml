@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  psql:
+    image: postgres:14.2
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpass
+  web: &web_base
+    tty: true
+    stdin_open: true
+    command: sh /docker-entrypoint.sh
+    build: ./docker
+    links:
+      - psql
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+      - bundle_cache:/app/vendor/bundle
+    environment:
+      HOST: localhost
+      PORT: 3000
+      DB_USER: dbuser
+      DB_PASSWORD: dbpass
+      DB_HOST: psql
+      DB_ADAPTER: postgresql
+volumes:
+  bundle_cache:
