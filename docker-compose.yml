@@ -6,6 +6,8 @@ services:
     environment:
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: dbpass
+    ports:
+      - 5432:5432
   web: &web_base
     tty: true
     stdin_open: true

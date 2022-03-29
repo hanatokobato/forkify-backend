@@ -11,6 +11,8 @@ ENV BUNDLE_PATH /app/vendor/bundle
 ENV BUNDLE_BIN /app/vendor/bundle/bin
 ENV PATH $BUNDLE_BIN:$BUNDLE_PATH/gems/bin:$PATH
 
+RUN mkdir -p "$GEM_HOME" && chmod 777 "$GEM_HOME"
+
 COPY ./docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 

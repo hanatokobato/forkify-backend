@@ -4,8 +4,7 @@
 #
 #  id           :bigint           not null, primary key
 #  cooking_time :string
-#  image        :string
-#  ingredients  :text
+#  image_url    :string
 #  publisher    :string
 #  servings     :integer
 #  source_url   :string
@@ -14,4 +13,7 @@
 #  updated_at   :datetime         not null
 #
 class Recipe < ApplicationRecord
+  has_many :ingredients
+
+  accepts_nested_attributes_for :ingredients
 end
