@@ -11,8 +11,10 @@
 #  title        :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  user_id      :bigint
 #
 class Recipe < ApplicationRecord
+  belongs_to :user, optional: true
   has_many :ingredients
 
   accepts_nested_attributes_for :ingredients
