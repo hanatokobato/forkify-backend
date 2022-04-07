@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_06_104226) do
+ActiveRecord::Schema.define(version: 2022_04_06_231936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -63,6 +63,17 @@ ActiveRecord::Schema.define(version: 2022_04_06_104226) do
     t.string "cooking_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "auth0_id"
+    t.string "name"
+    t.string "nickname"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["auth0_id"], name: "uniq_auth0_user", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
