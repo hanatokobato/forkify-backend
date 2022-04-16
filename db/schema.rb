@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_06_231936) do
+ActiveRecord::Schema.define(version: 2022_04_16_231936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(version: 2022_04_06_231936) do
     t.decimal "quantity"
     t.string "unit"
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
   end
 
@@ -61,8 +61,8 @@ ActiveRecord::Schema.define(version: 2022_04_06_231936) do
     t.string "image_url"
     t.integer "servings"
     t.string "cooking_time"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.bigint "user_id"
   end
 
@@ -71,8 +71,8 @@ ActiveRecord::Schema.define(version: 2022_04_06_231936) do
     t.string "name"
     t.string "nickname"
     t.string "email"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["auth0_id"], name: "uniq_auth0_user", unique: true
   end
 
