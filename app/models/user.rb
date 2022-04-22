@@ -16,4 +16,6 @@
 #
 class User < ApplicationRecord
   has_many :recipes
+  has_many :recipe_bookmarks
+  has_many :bookmarked_recipes, through: :recipe_bookmarks, source: :recipe
 end
