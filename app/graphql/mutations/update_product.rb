@@ -1,4 +1,5 @@
-class Mutations::CreateProduct < Mutations::BaseMutation
+class Mutations::UpdateProduct < Mutations::BaseMutation
+  argument :id, ID, required: true
   argument :name, String, required: true
   argument :description, String
   argument :price, Float
@@ -8,11 +9,11 @@ class Mutations::CreateProduct < Mutations::BaseMutation
   field :product, Types::ProductType
   field :errors, [String], null: false
 
-  def resolve(name:, description:, price:, quantity: , images:)
-    product = Product.new(name: name, description: description, price: price,
-      quantity: quantity, images_attributes: images.map(&:to_h))
+  def resolve(id:, name:, description:, price:, quantity: , images:)
+    product = Product.find id
 
-    if product.save
+    if product.update name: name, description: description, price: price,
+      quantity: quantity, images_attributes: images.map(&:to_h)
       {
         product: product,
         errors: []
