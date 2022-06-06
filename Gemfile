@@ -13,9 +13,12 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'graphql'
 gem 'rest-client'
+gem 'awesome_nested_set'
+gem 'friendly_id', '~> 5.4.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry', '~> 0.13.1'
 end
 
 group :development do
