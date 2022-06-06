@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_22_084923) do
+ActiveRecord::Schema.define(version: 2022_05_28_073654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -44,6 +44,17 @@ ActiveRecord::Schema.define(version: 2022_04_22_084923) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "images", force: :cascade do |t|
+    t.integer "imageable_id"
+    t.string "imageable_type"
+    t.integer "position"
+    t.string "caption"
+    t.string "photo_link"
+    t.index ["imageable_id"], name: "index_images_on_imageable_id"
+    t.index ["imageable_type"], name: "index_images_on_imageable_type"
+    t.index ["position"], name: "index_images_on_position"
+  end
+
   create_table "ingredients", force: :cascade do |t|
     t.bigint "recipe_id"
     t.decimal "quantity"
@@ -52,6 +63,32 @@ ActiveRecord::Schema.define(version: 2022_04_22_084923) do
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
+  end
+
+  create_table "product_types", force: :cascade do |t|
+    t.string "name"
+    t.integer "parent_id"
+    t.boolean "active", default: true
+    t.integer "rgt"
+    t.integer "lft"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.index ["lft"], name: "index_product_types_on_lft"
+    t.index ["rgt"], name: "index_product_types_on_rgt"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.decimal "price", precision: 8, scale: 2
+    t.decimal "old_price"
+    t.boolean "on_sale"
+    t.boolean "sold_out"
+    t.boolean "featured"
+    t.integer "quantity"
+    t.integer "product_type_id"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
   end
 
   create_table "recipe_bookmarks", force: :cascade do |t|
