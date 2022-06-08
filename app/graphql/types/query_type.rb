@@ -13,5 +13,14 @@ module Types
     def products
       Product.all.includes(:images)
     end
+
+    # /products/:id
+    field :product, Types::ProductType do
+      argument :id, ID
+    end
+
+    def product(id:)
+      Product.find_by id: id
+    end
   end
 end
