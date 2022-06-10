@@ -25,4 +25,10 @@ class Product < ApplicationRecord
   validates :name, presence: true
   validates :price, presence: true
   validates :quantity, presence: true, :inclusion => 1..999
+
+  OUT_OF_STOCK_QTY = 0
+
+  def sold_out?
+    quantity <= OUT_OF_STOCK_QTY
+  end
 end

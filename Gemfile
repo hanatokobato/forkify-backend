@@ -15,6 +15,7 @@ gem 'graphql'
 gem 'rest-client'
 gem 'awesome_nested_set'
 gem 'friendly_id', '~> 5.4.0'
+gem 'jwt'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -27,6 +28,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'annotate'
+  gem 'dotenv-rails'
 end
 
 group :test do

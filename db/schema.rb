@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_28_073654) do
+ActiveRecord::Schema.define(version: 2022_06_10_030751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -44,6 +44,24 @@ ActiveRecord::Schema.define(version: 2022_05_28_073654) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "cart_items", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "cart_id"
+    t.integer "quantity", default: 1
+    t.boolean "active", default: true
+    t.integer "item_type_id", null: false
+    t.integer "product_id"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
   create_table "images", force: :cascade do |t|
     t.integer "imageable_id"
     t.string "imageable_type"
@@ -63,6 +81,12 @@ ActiveRecord::Schema.define(version: 2022_05_28_073654) do
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
+  end
+
+  create_table "item_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
   end
 
   create_table "product_types", force: :cascade do |t|

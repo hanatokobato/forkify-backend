@@ -22,5 +22,14 @@ module Types
     def product(id:)
       Product.find_by id: id
     end
+
+    # /cart
+    field :cart, Types::CartType do
+      argument :user_id, Integer
+    end
+
+    def cart(user_id:)
+      current_user.current_cart || current_user.carts.create!
+    end
   end
 end
