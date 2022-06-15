@@ -1,16 +1,13 @@
 class GraphqlController < ApplicationController
-  # If accessing from outside this domain, nullify the session
-  # This allows for outside API access while preventing CSRF attacks,
-  # but you'll have to authenticate your user separately
-  # protect_from_forgery with: :null_session
+  before_action :verify_access_token
+  before_action :authorize_request, unless: :is_introspection?
 
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
+      current_user: current_user
     }
     result = ForkifyBackendSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -46,5 +43,26 @@ class GraphqlController < ApplicationController
     logger.error e.backtrace.join("\n")
 
     render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: 500
+  end
+
+  def authorize_request
+    auth_token = AuthorizationService.new(request.headers).authenticate_request!
+    @current_user = User.find(auth_token[0]['https://hasura.io/jwt/claims']['x-hasura-user-id'])
+  rescue  JWT::VerificationError, JWT::DecodeError
+    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+  end
+
+  def current_user
+    @current_user
+  end
+
+  def is_introspection?
+    params[:operationName] == 'IntrospectionQuery'
+  end
+
+  def verify_access_token
+    return if request.headers['Access-Key'] == ENV['ACCESS_KEY']
+
+    render json: { errors: ['Invalid Access Token'] }, status: :unauthorized
   end
 end
