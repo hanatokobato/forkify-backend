@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_10_030751) do
+ActiveRecord::Schema.define(version: 2022_06_18_153612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -60,6 +60,15 @@ ActiveRecord::Schema.define(version: 2022_06_10_030751) do
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.string "abbreviation", limit: 5
+    t.boolean "active", default: false
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.index ["name"], name: "index_countries_on_name"
   end
 
   create_table "images", force: :cascade do |t|
@@ -134,6 +143,18 @@ ActiveRecord::Schema.define(version: 2022_06_10_030751) do
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.bigint "user_id"
+  end
+
+  create_table "states", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "abbreviation", limit: 5, null: false
+    t.string "described_as"
+    t.integer "country_id", null: false
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.index ["abbreviation"], name: "index_states_on_abbreviation"
+    t.index ["country_id"], name: "index_states_on_country_id"
+    t.index ["name"], name: "index_states_on_name"
   end
 
   create_table "users", force: :cascade do |t|
