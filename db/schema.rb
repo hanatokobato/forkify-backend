@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_18_153612) do
+ActiveRecord::Schema.define(version: 2022_06_23_063952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2022_06_18_153612) do
     t.boolean "active", default: false
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.bigint "shipping_zone_id"
     t.index ["name"], name: "index_countries_on_name"
   end
 
@@ -145,6 +146,20 @@ ActiveRecord::Schema.define(version: 2022_06_18_153612) do
     t.bigint "user_id"
   end
 
+  create_table "shipping_rates", force: :cascade do |t|
+    t.string "name"
+    t.decimal "amount", precision: 8, scale: 2, default: "0.0", null: false
+    t.bigint "shipping_zone_id"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+  end
+
+  create_table "shipping_zones", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+  end
+
   create_table "states", force: :cascade do |t|
     t.string "name", null: false
     t.string "abbreviation", limit: 5, null: false
@@ -152,6 +167,7 @@ ActiveRecord::Schema.define(version: 2022_06_18_153612) do
     t.integer "country_id", null: false
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.bigint "shipping_zone_id"
     t.index ["abbreviation"], name: "index_states_on_abbreviation"
     t.index ["country_id"], name: "index_states_on_country_id"
     t.index ["name"], name: "index_states_on_name"
