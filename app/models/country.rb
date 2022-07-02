@@ -2,18 +2,20 @@
 #
 # Table name: countries
 #
-#  id           :bigint           not null, primary key
-#  abbreviation :string(5)
-#  active       :boolean          default(FALSE)
-#  name         :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id               :bigint           not null, primary key
+#  abbreviation     :string(5)
+#  active           :boolean          default(FALSE)
+#  name             :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  shipping_zone_id :bigint
 #
 # Indexes
 #
 #  index_countries_on_name  (name)
 #
 class Country < ApplicationRecord
+  belongs_to :shipping_zone, optional: true
   has_many :states
 
   validates :name,  presence: true,       :length => { :maximum => 200 }

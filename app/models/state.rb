@@ -2,13 +2,14 @@
 #
 # Table name: states
 #
-#  id           :bigint           not null, primary key
-#  abbreviation :string(5)        not null
-#  described_as :string
-#  name         :string           not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  country_id   :integer          not null
+#  id               :bigint           not null, primary key
+#  abbreviation     :string(5)        not null
+#  described_as     :string
+#  name             :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  country_id       :integer          not null
+#  shipping_zone_id :bigint
 #
 # Indexes
 #
@@ -18,6 +19,7 @@
 #
 class State < ApplicationRecord
   belongs_to :country
+  belongs_to :shipping_zone, optional: true
 
   validates :name,              presence: true, length: { maximum: 150 }
   validates :abbreviation,      presence: true, length: { maximum: 12 }
