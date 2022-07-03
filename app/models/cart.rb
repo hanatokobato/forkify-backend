@@ -65,4 +65,18 @@ class Cart < ActiveRecord::Base
   def remove_product(product_id)
     cart_items.find_by(product_id: product_id).destroy!
   end
+
+  def shipping_options country_id, state_id = nil
+    zones = ShippingZone.by_country country_id
+    zones = zones.by_state(state_id) if state_id
+    zones.includes(:shipping_rates).map do |zone|
+      zone.shipping_rates.map do |rate|
+        {
+          shipping_rate_id: rate.id,
+          description: "#{zone.name} - #{rate.name}",
+          price: rate.amount
+        }
+      end
+    end.flatten
+  end
 end

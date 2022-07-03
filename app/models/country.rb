@@ -22,6 +22,7 @@ class Country < ApplicationRecord
   validates :abbreviation,  presence: true,       :length => { :maximum => 10 }
 
   after_save :expire_cache
+  after_save :update_state_shipping_zone, if: :saved_change_to_shipping_zone_id?
 
   scope :active_countries, -> { where(active: true) }
   scope :inactive_countries, -> { where(active: false) }
@@ -45,5 +46,9 @@ class Country < ApplicationRecord
 
   def expire_cache
     Rails.cache.delete("Country-form_selector")
+  end
+
+  def update_state_shipping_zone
+    states.update_all shipping_zone_id: shipping_zone_id
   end
 end

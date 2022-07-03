@@ -31,5 +31,17 @@ module Types
     def cart(user_id:)
       current_user.current_cart || current_user.carts.create!
     end
+
+    # /shipping_options
+    field :shipping_options, [Types::ShippingOptionType], null: false do
+      argument :cart_id, Integer
+      argument :country_id, Integer
+      argument :state_id, Integer, required: false
+    end
+
+    def shipping_options(cart_id:, country_id:, state_id: nil)
+      cart = Cart.find cart_id
+      cart.shipping_options country_id, state_id
+    end
   end
 end

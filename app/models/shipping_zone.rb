@@ -15,4 +15,12 @@ class ShippingZone < ApplicationRecord
   validates :name, presence: true, length: { maximum: 255 }
 
   accepts_nested_attributes_for :shipping_rates
+
+  scope :by_country, -> (country_id) do
+    joins(:countries).where(countries: { id: country_id })
+  end
+
+  scope :by_state, -> (state_id) do
+    joins(:states).where(states: { id: state_id })
+  end
 end
