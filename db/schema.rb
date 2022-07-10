@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_23_063952) do
+ActiveRecord::Schema.define(version: 2022_07_04_152438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -42,6 +42,27 @@ ActiveRecord::Schema.define(version: 2022_06_23_063952) do
     t.integer "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.integer "address_type"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "addressable_type"
+    t.integer "addressable_id"
+    t.string "address1"
+    t.string "city"
+    t.integer "country_id"
+    t.integer "state_id"
+    t.string "zip_code"
+    t.boolean "is_default", default: false
+    t.boolean "is_billing_default", default: false
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.index ["addressable_id"], name: "index_addresses_on_addressable_id"
+    t.index ["addressable_type"], name: "index_addresses_on_addressable_type"
+    t.index ["country_id"], name: "index_addresses_on_country_id"
+    t.index ["state_id"], name: "index_addresses_on_state_id"
   end
 
   create_table "cart_items", force: :cascade do |t|
@@ -97,6 +118,39 @@ ActiveRecord::Schema.define(version: 2022_06_23_063952) do
     t.string "name"
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.decimal "price", precision: 8, scale: 2
+    t.decimal "total", precision: 8, scale: 2
+    t.integer "order_id"
+    t.integer "product_id"
+    t.string "state"
+    t.integer "shipping_rate_id"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
+    t.index ["shipping_rate_id"], name: "index_order_items_on_shipping_rate_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "number"
+    t.string "ip_address"
+    t.string "email"
+    t.string "state"
+    t.integer "user_id"
+    t.integer "bill_address_id"
+    t.integer "ship_address_id"
+    t.boolean "shipped", default: false
+    t.datetime "calculated_at"
+    t.datetime "completed_at"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.index ["bill_address_id"], name: "index_orders_on_bill_address_id"
+    t.index ["email"], name: "index_orders_on_email"
+    t.index ["number"], name: "index_orders_on_number"
+    t.index ["ship_address_id"], name: "index_orders_on_ship_address_id"
   end
 
   create_table "product_types", force: :cascade do |t|

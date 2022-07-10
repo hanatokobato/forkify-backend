@@ -7,5 +7,7 @@ module Types
     field :update_cart_qty, mutation: Mutations::UpdateCartQty
     field :setting_shipping_zone, mutation: Mutations::SettingShippingZone
     field :delete_shipping_zone, mutation: Mutations::DeleteShippingZone
+    field :create_order, mutation: Mutations::CreateOrder
+    field :create_address, mutation: Mutations::CreateAddress
   end
 end

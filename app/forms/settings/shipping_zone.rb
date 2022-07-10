@@ -31,6 +31,7 @@ class Settings::ShippingZone
 
   def assign_countries shipping_zone_id
     Country.where(id: country_ids).update_all shipping_zone_id: shipping_zone_id
+    State.where(country_id: country_ids).update_all shipping_zone_id: shipping_zone_id
   end
 
   def country_not_assigned
