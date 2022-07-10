@@ -16,6 +16,7 @@ gem 'rest-client'
 gem 'awesome_nested_set'
 gem 'friendly_id', '~> 5.4.0'
 gem 'jwt'
+gem 'aasm'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

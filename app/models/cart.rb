@@ -79,4 +79,15 @@ class Cart < ActiveRecord::Base
       end
     end.flatten
   end
+
+  def shopping_cart_items_equal_order_items? order
+    product_ids_in_cart = []
+    cart_items.each do |item|
+      item.quantity.times do
+        product_ids_in_cart.push(item.product_id)
+      end
+    end
+    order_items = order.order_items.map(&:product_id)
+    product_ids_in_cart.sort == order_items.sort
+  end
 end
