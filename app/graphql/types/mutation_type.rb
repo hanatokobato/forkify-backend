@@ -8,6 +8,7 @@ module Types
     field :setting_shipping_zone, mutation: Mutations::SettingShippingZone
     field :delete_shipping_zone, mutation: Mutations::DeleteShippingZone
     field :create_order, mutation: Mutations::CreateOrder
+    field :update_order, mutation: Mutations::UpdateOrder
     field :create_address, mutation: Mutations::CreateAddress
   end
 end
