@@ -2,7 +2,6 @@ class Mutations::CreateOrder < Mutations::BaseMutation
   argument :cart_id, Integer, required: true
 
   field :order, Types::OrderType
-  field :errors, [String]
 
   def resolve(cart_id:)
     cart = context[:current_user].carts.find cart_id
@@ -14,10 +13,7 @@ class Mutations::CreateOrder < Mutations::BaseMutation
       create_order cart
     end
 
-    {
-      order: order,
-      errors: []
-    }
+    { order: order }
   end
 
   private

@@ -11,7 +11,6 @@ class Mutations::CreateAddress < Mutations::BaseMutation
   argument :order_id, Integer, required: false
 
   field :address, Types::AddressType
-  field :errors, [String]
 
   def resolve(shopping_address_id:, first_name:, last_name:, address1:, city:, state_id:, zip_code:, default:, country_id:, order_id:)
     if shopping_address_id.present?
@@ -31,10 +30,7 @@ class Mutations::CreateAddress < Mutations::BaseMutation
     end
     update_order_address_id(address.id, order_id) if order_id.present?
 
-    {
-      address: address,
-      errors: []
-    }
+    { address: address }
   end
 
   private

@@ -1,22 +1,12 @@
 class Mutations::DeleteShippingZone < Mutations::BaseMutation
   argument :id, ID, required: true
 
-  field :id, ID, null: false
-  field :errors, [String], null: false
+  field :status, String
 
   def resolve(id:)
     zone = ShippingZone.find id
+    zone.destroy!
 
-    if zone.destroy
-      {
-        id: zone.id,
-        errors: []
-      }
-    else
-      {
-        id: nil,
-        errors: ['Delete failed!']
-      }
-    end
+    { status: :success }
   end
 end
