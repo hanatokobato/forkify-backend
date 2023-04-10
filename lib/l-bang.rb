@@ -1,5 +1,5 @@
 def l_bang(a, b, c, n)
-  return if n <= 1 || a < 0 || b < 0 || c < 0
+  return '' if n <= 1 || a < 0 || b < 0 || c < 0
 
   min, mid, max = [a, b, c].sort
   min_char, mid_char, max_char = ['a', 'b', 'c']
@@ -29,14 +29,19 @@ def l_bang(a, b, c, n)
   end
 
   result = ''
-  if (mid_min_arr.length > 0)
-    last_max_str = max % k == 0 ? (max_char * k) : (max_char * (max % k))
+  max_block_str = max_char * k
+  last_max_str = max % k == 0 ? max_block_str : (max_char * (max % k))
+  mid_min_arr_length = mid_min_arr.length
+  if (mid_min_arr_length > 0)
     mid_min_arr.each_with_index do |mid_min, i|
-      max_str = i == max_block_count - 1 ? last_max_str : (max_char * k)
-      result += max_str + mid_min
+      if i == mid_min_arr_length - 1
+        result += mid_min_arr_length === max_block_count ? "#{last_max_str}#{mid_min}" : "#{max_block_str}#{mid_min}#{last_max_str}"
+      else
+        result += "#{max_block_str}#{mid_min}"
+      end
     end
   else
-    result = max <= k ? max_char * max : max_char * k
+    result = max <= k ? max_char * max : max_block_str
   end
 
   result
