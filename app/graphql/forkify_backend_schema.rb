@@ -48,4 +48,12 @@ class ForkifyBackendSchema < GraphQL::Schema
     full_global_id = "gid://#{GlobalID.app}/#{id}"
     GlobalID::Locator.locate(full_global_id)
   end
+
+  rescue_from(ActiveRecord::RecordNotFound) do |err, obj, args, ctx, field|
+    raise GraphQL::ExecutionError, err.message
+  end
+
+  rescue_from(ActiveRecord::RecordInvalid) do |err, obj, args, ctx, field|
+    raise GraphQL::ExecutionError, "Invalid input: #{err.record.errors.full_messages.join(', ')}"
+  end
 end

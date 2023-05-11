@@ -1,19 +1,12 @@
 class Mutations::DeleteProduct < Mutations::BaseMutation
   argument :id, ID, required: true
 
-  field :errors, [String], null: false
+  field :status, String
 
   def resolve(id:)
-    product = Product.find_by id: id
+    product = Product.find id
+    product.destroy!
 
-    if product.present? && product.destroy
-      {
-        errors: []
-      }
-    else
-      {
-        errors: ['Delete failed!']
-      }
-    end
+    { status: :success }
   end
 end

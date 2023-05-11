@@ -58,8 +58,8 @@ class Cart < ActiveRecord::Base
   end
 
   def update_shopping_cart cart_item, qty = 1
-    cart_item.update(quantity: (cart_item.quantity + qty))
-    cart_item.destroy if cart_item.quantity <= 0
+    cart_item.update!(quantity: (cart_item.quantity + qty))
+    cart_item.destroy! if cart_item.quantity <= 0
   end
 
   def remove_product(product_id)
